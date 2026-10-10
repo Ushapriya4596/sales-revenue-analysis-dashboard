@@ -237,6 +237,7 @@ const ALIASES: Record<string, string[]> = {
 };
 
 function toIsoDate(v: unknown): string {
+  if (v instanceof Date) return isNaN(v.getTime()) ? "" : new Date(v.getTime() - v.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
   if (typeof v === "number") {
     // Excel serial date
     const d = new Date(Math.round((v - 25569) * 86400000));
