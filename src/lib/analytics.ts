@@ -81,7 +81,7 @@ export function groupBy(rows: SaleRecord[], key: (r: SaleRecord) => string) {
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 export function monthLabel(ym: string) {
-  const [y, m] = ym.split("-");
+  const [y = "", m = "1"] = ym.split("-");
   return `${MONTHS[Number(m) - 1]} ${y.slice(2)}`;
 }
 
@@ -119,7 +119,7 @@ export function productTable(rows: SaleRecord[], prev: SaleRecord[]) {
     const revenue = sum(rs, "revenue");
     return {
       product,
-      category: rs[0].category,
+      category: rs[0]!.category,
       units: sum(rs, "quantity"),
       revenue,
       profit: sum(rs, "profit"),

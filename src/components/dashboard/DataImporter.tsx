@@ -27,12 +27,12 @@ export function DataImporter({ onImport }: { onImport: (rows: SaleRecord[]) => v
           out.push(cur);
           return out.map((s) => s.trim());
         };
-        const headers = split(lines[0]);
-        raw = lines.slice(1).map((l) => Object.fromEntries(split(l).map((v, i) => [headers[i], v])));
+        const headers = split(lines[0] ?? "");
+        raw = lines.slice(1).map((l) => Object.fromEntries(split(l).map((v, i) => [headers[i] ?? `col${i}`, v])));
       } else {
         const XLSX = await import("xlsx");
         const wb = XLSX.read(await file.arrayBuffer());
-        raw = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
+        raw = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]!]!);
       }
       const { data, error } = parseRows(raw);
       if (error) {
