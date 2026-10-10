@@ -195,7 +195,7 @@ export function insights(rows: SaleRecord[], prev: SaleRecord[], fmt: (n: number
   const cats = byDimension(rows, "category");
   const top = cats[0];
   out.push(`${top.name} generated the highest revenue (${fmt(top.revenue)}), contributing ${((top.revenue / k.revenue) * 100).toFixed(1)}% of total revenue.`);
-  const low = cats[cats.length - 1];
+  const low = cats[cats.length - 1]!;
   if (cats.length > 1) out.push(`${low.name} is the lowest-performing category at ${((low.revenue / k.revenue) * 100).toFixed(1)}% of revenue.`);
   const prods = productTable(rows, prev).sort((a, b) => b.revenue - a.revenue);
   if (prods[0]) out.push(`Best-performing product: ${prods[0].product} with ${fmt(prods[0].revenue)} in revenue from ${prods[0].units} units.`);
@@ -244,7 +244,7 @@ function toIsoDate(v: unknown): string {
   }
   const s = String(v ?? "").trim();
   const dmy = s.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$/);
-  if (dmy) return `${dmy[3]}-${dmy[2].padStart(2, "0")}-${dmy[1].padStart(2, "0")}`;
+  if (dmy) return `${dmy[3]}-${dmy[2]!.padStart(2, "0")}-${dmy[1]!.padStart(2, "0")}`;
   const d = new Date(s);
   return isNaN(d.getTime()) ? "" : d.toISOString().slice(0, 10);
 }
