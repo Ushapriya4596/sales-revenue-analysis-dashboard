@@ -193,7 +193,7 @@ export function insights(rows: SaleRecord[], prev: SaleRecord[], fmt: (n: number
   const k = kpis(rows);
   const pk = kpis(prev);
   const cats = byDimension(rows, "category");
-  const top = cats[0];
+  const top = cats[0]!;
   out.push(`${top.name} generated the highest revenue (${fmt(top.revenue)}), contributing ${((top.revenue / k.revenue) * 100).toFixed(1)}% of total revenue.`);
   const low = cats[cats.length - 1]!;
   if (cats.length > 1) out.push(`${low.name} is the lowest-performing category at ${((low.revenue / k.revenue) * 100).toFixed(1)}% of revenue.`);
