@@ -180,7 +180,7 @@ function DashboardPage() {
           ) : (
             <>
               {/* KPI cards */}
-              <section ref={(el) => { sectionRefs.current.overview = el; }} className="scroll-mt-24">
+              <section ref={(el) => { sectionRefs.current["overview"] = el; }} className="scroll-mt-24">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
                   <KpiCard title="Total Sales" value={formatNumber(k.sales)} change={growth(k.sales, pk.sales)} icon={ShoppingCart} />
                   <KpiCard title="Total Revenue" value={formatINR(k.revenue)} change={growth(k.revenue, pk.revenue)} icon={IndianRupee} />
@@ -192,7 +192,7 @@ function DashboardPage() {
               </section>
 
               {/* Trend + category */}
-              <section ref={(el) => { sectionRefs.current.sales = el; }} className="grid scroll-mt-24 grid-cols-1 gap-4 xl:grid-cols-3">
+              <section ref={(el) => { sectionRefs.current["sales"] = el; }} className="grid scroll-mt-24 grid-cols-1 gap-4 xl:grid-cols-3">
                 <ChartCard
                   title="Sales & Revenue Trend"
                   subtitle="Monthly performance over the selected period"
@@ -257,7 +257,7 @@ function DashboardPage() {
                   </div>
                 </ChartCard>
 
-                <div ref={(el) => { sectionRefs.current.regions = el; }} className="scroll-mt-24">
+                <div ref={(el) => { sectionRefs.current["regions"] = el; }} className="scroll-mt-24">
                   <ChartCard
                     title="Regional Sales Analysis"
                     subtitle="Compare regions across metrics"
@@ -280,14 +280,14 @@ function DashboardPage() {
               </section>
 
               {/* Products */}
-              <section ref={(el) => { sectionRefs.current.products = el; }} className="scroll-mt-24">
+              <section ref={(el) => { sectionRefs.current["products"] = el; }} className="scroll-mt-24">
                 <ChartCard title="Top-Performing Products" subtitle="Ranked by selected metric — top 3 highlighted">
                   <ProductTable rows={products} />
                 </ChartCard>
               </section>
 
               {/* Customers */}
-              <section ref={(el) => { sectionRefs.current.customers = el; }} className="grid scroll-mt-24 grid-cols-1 gap-4 xl:grid-cols-3">
+              <section ref={(el) => { sectionRefs.current["customers"] = el; }} className="grid scroll-mt-24 grid-cols-1 gap-4 xl:grid-cols-3">
                 <ChartCard title="Customer Analysis" subtitle="Key customer metrics" className="xl:col-span-2">
                   <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
                     {[
@@ -322,7 +322,7 @@ function DashboardPage() {
               </section>
 
               {/* Insights */}
-              <section ref={(el) => { sectionRefs.current.insights = el; }} className="scroll-mt-24">
+              <section ref={(el) => { sectionRefs.current["insights"] = el; }} className="scroll-mt-24">
                 <ChartCard title="AI Business Insights" subtitle="Generated automatically from the current dataset">
                   <ul className="space-y-3">
                     {notes.map((n, i) => (

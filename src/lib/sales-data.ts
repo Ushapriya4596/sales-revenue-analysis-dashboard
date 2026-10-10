@@ -108,22 +108,22 @@ export function generateSampleData(): SaleRecord[] {
     const count = Math.round(base * festive * (0.85 + rand() * 0.3));
 
     for (let i = 0; i < count; i++) {
-      const cat = CATEGORIES[Math.floor(rand() * CATEGORIES.length)];
+      const cat = CATEGORIES[Math.floor(rand() * CATEGORIES.length)]!;
       const list = PRODUCTS[cat];
-      const prod = list[Math.floor(rand() * list.length)];
+      const prod = list[Math.floor(rand() * list.length)]!;
       const day = 1 + Math.floor(rand() * 28);
       const date = new Date(month.getFullYear(), month.getMonth(), day);
       const quantity = 1 + Math.floor(rand() * 5);
       const unitPrice = Math.round(prod.price * (0.92 + rand() * 0.16));
       const revenue = unitPrice * quantity;
       const cost = Math.round(revenue * prod.costRatio * (0.95 + rand() * 0.1));
-      const customer = `${FIRST[Math.floor(rand() * FIRST.length)]} ${LAST[Math.floor(rand() * LAST.length)]}`;
+      const customer = `${FIRST[Math.floor(rand() * FIRST.length)]!} ${LAST[Math.floor(rand() * LAST.length)]!}`;
       records.push({
         orderId: `ORD-${orderNum++}`,
         date: date.toISOString().slice(0, 10),
         product: prod.name,
         category: cat,
-        region: REGIONS[Math.floor(rand() * REGIONS.length)],
+        region: REGIONS[Math.floor(rand() * REGIONS.length)]!,
         customer,
         customerType: rand() < 0.42 ? "New" : "Returning",
         quantity,
@@ -131,7 +131,7 @@ export function generateSampleData(): SaleRecord[] {
         revenue,
         cost,
         profit: revenue - cost,
-        channel: CHANNELS[Math.floor(rand() * CHANNELS.length)],
+        channel: CHANNELS[Math.floor(rand() * CHANNELS.length)]!,
       });
     }
   });
