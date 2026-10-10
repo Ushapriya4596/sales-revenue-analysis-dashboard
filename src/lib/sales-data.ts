@@ -109,7 +109,7 @@ export function generateSampleData(): SaleRecord[] {
 
     for (let i = 0; i < count; i++) {
       const cat = CATEGORIES[Math.floor(rand() * CATEGORIES.length)]!;
-      const list = PRODUCTS[cat];
+      const list = PRODUCTS[cat]!;
       const prod = list[Math.floor(rand() * list.length)]!;
       const day = 1 + Math.floor(rand() * 28);
       const date = new Date(month.getFullYear(), month.getMonth(), day);

@@ -73,8 +73,8 @@ export function groupBy(rows: SaleRecord[], key: (r: SaleRecord) => string) {
   const map = new Map<string, SaleRecord[]>();
   for (const r of rows) {
     const k = key(r);
-    if (!map.has(k)) map.set(k, []);
-    map.get(k)!.push(r);
+    if (!map["has"](k)) map["set"](k, []);
+    map["get"](k)!.push(r);
   }
   return map;
 }
@@ -266,23 +266,23 @@ export function parseRows(raw: Record<string, unknown>[]): { data?: SaleRecord[]
     if (!date) return;
     const quantity = num(r[map["quantity"]!]);
     const revenue = num(r[map["revenue"]!]);
-    const cost = map.cost ? num(r[map["cost"]!]) : map.profit ? revenue - num(r[map["profit"]!]) : revenue * 0.6;
-    const profit = map.profit ? num(r[map["profit"]!]) : revenue - cost;
+    const cost = map["cost"] ? num(r[map["cost"]!]) : map["profit"] ? revenue - num(r[map["profit"]!]) : revenue * 0.6;
+    const profit = map["profit"] ? num(r[map["profit"]!]) : revenue - cost;
     const ct = String(r[map["customerType"]!] ?? "").toLowerCase().startsWith("new") ? "New" : "Returning";
     data.push({
-      orderId: map.orderId ? String(r[map["orderId"]!]) : `ROW-${i + 1}`,
+      orderId: map["orderId"] ? String(r[map["orderId"]!]) : `ROW-${i + 1}`,
       date,
       product: String(r[map["product"]!]),
       category: String(r[map["category"]!]),
       region: String(r[map["region"]!]),
-      customer: map.customer ? String(r[map["customer"]!]) : "Unknown",
+      customer: map["customer"] ? String(r[map["customer"]!]) : "Unknown",
       customerType: ct,
       quantity,
-      unitPrice: map.unitPrice ? num(r[map["unitPrice"]!]) : quantity ? revenue / quantity : 0,
+      unitPrice: map["unitPrice"] ? num(r[map["unitPrice"]!]) : quantity ? revenue / quantity : 0,
       revenue,
       cost,
       profit,
-      channel: map.channel ? String(r[map["channel"]!]) : "Unknown",
+      channel: map["channel"] ? String(r[map["channel"]!]) : "Unknown",
     });
   });
   if (!data.length) return { error: "No rows had a valid date." };
