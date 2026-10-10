@@ -251,7 +251,7 @@ function toIsoDate(v: unknown): string {
 
 export function parseRows(raw: Record<string, unknown>[]): { data?: SaleRecord[]; error?: string } {
   if (!raw.length) return { error: "The file has no data rows." };
-  const headers = Object.keys(raw[0]);
+  const headers = Object.keys(raw[0] ?? {});
   const map: Record<string, string> = {};
   for (const [field, names] of Object.entries(ALIASES)) {
     const h = headers.find((h) => names.includes(h.trim().toLowerCase()));
