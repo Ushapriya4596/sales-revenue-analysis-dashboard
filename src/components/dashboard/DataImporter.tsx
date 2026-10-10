@@ -10,12 +10,24 @@ export function DataImporter({ onImport }: { onImport: (rows: SaleRecord[]) => v
   const [busy, setBusy] = useState(false);
 
   async function handleFile(file: File) {
+    const ext = file.name.toLowerCase().split(".").pop() ?? "";
+    if (!["csv", "xlsx", "xls"].includes(ext)) {
+      toast.error("Unsupported file format", { description: "Please choose a .csv, .xlsx or .xls file." });
+      if (inputRef.current) inputRef.current.value = "";
+      return;
+    }
+    if (file.size === 0) {
+      toast.error("Empty file", { description: "The selected file contains no data." });
+      if (inputRef.current) inputRef.current.value = "";
+      return;
+    }
     setBusy(true);
+    const tid = toast.loading(`Importing ${file.name}…`);
     try {
       let raw: Record<string, unknown>[];
       if (file.name.toLowerCase().endsWith(".csv")) {
         const text = await file.text();
-        const lines = text.split(/\r?\n/).filter((l) => l.trim());
+        const lines = text.replace(/^\uFEFF/, "").split(/\r?\n/).filter((l) => l.trim());
         const split = (l: string) => {
           const out: string[] = [];
           let cur = "", q = false;
@@ -31,18 +43,18 @@ export function DataImporter({ onImport }: { onImport: (rows: SaleRecord[]) => v
         raw = lines.slice(1).map((l) => Object.fromEntries(split(l).map((v, i) => [headers[i] ?? `col${i}`, v])));
       } else {
         const XLSX = await import("xlsx");
-        const wb = XLSX.read(await file.arrayBuffer());
-        raw = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]!]!);
+        const wb = XLSX.read(await file.arrayBuffer(), { cellDates: true });
+        raw = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]!]!, { defval: "" });
       }
       const { data, error } = parseRows(raw);
       if (error) {
-        toast.error("Import failed", { description: error });
+        toast.error("Import failed", { id: tid, description: error });
       } else if (data) {
         onImport(data);
-        toast.success("Data imported", { description: `${data.length} records loaded. Dashboard updated.` });
+        toast.success(`Imported ${data.length} rows`, { id: tid, description: `${raw.length - data.length > 0 ? `${raw.length - data.length} invalid rows skipped. ` : ""}Dashboard updated.` });
       }
     } catch {
-      toast.error("Import failed", { description: "Could not read the file. Use CSV or .xlsx." });
+      toast.error("Import failed", { id: tid, description: "Could not read the file. It may be corrupted or not a valid CSV/Excel file." });
     } finally {
       setBusy(false);
       if (inputRef.current) inputRef.current.value = "";
