@@ -228,15 +228,16 @@ const ALIASES: Record<string, string[]> = {
   region: ["region", "zone"],
   customer: ["customer", "customer name"],
   customerType: ["customer type", "customertype", "customer_type", "type"],
-  quantity: ["quantity", "qty", "units", "sales"],
+  quantity: ["quantity", "qty", "units", "units sold", "quantity sold"],
   unitPrice: ["unit price", "unitprice", "price"],
-  revenue: ["revenue", "amount", "total"],
+  revenue: ["revenue", "total revenue", "amount", "total", "net sales", "sales amount", "total sales", "sales", "sale value"],
   cost: ["cost"],
   profit: ["profit"],
-  channel: ["sales channel", "channel"],
+  channel: ["sales channel", "channel", "saleschannel"],
 };
 
 function toIsoDate(v: unknown): string {
+  if (v instanceof Date) return isNaN(v.getTime()) ? "" : new Date(v.getTime() - v.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
   if (typeof v === "number") {
     // Excel serial date
     const d = new Date(Math.round((v - 25569) * 86400000));
@@ -254,7 +255,9 @@ export function parseRows(raw: Record<string, unknown>[]): { data?: SaleRecord[]
   const headers = Object.keys(raw[0] ?? {});
   const map: Record<string, string> = {};
   for (const [field, names] of Object.entries(ALIASES)) {
-    const h = headers.find((h) => names.includes(h.trim().toLowerCase()));
+    const norm = (x: string) => x.trim().toLowerCase().replace(/[_\-.]+/g, " ").replace(/\s+/g, " ");
+    let h: string | undefined;
+    for (const n of names) { h = headers.find((x) => norm(x) === n); if (h) break; }
     if (h) map[field] = h;
   }
   const missing = REQUIRED.filter((r) => !map[r]);
@@ -264,6 +267,7 @@ export function parseRows(raw: Record<string, unknown>[]): { data?: SaleRecord[]
   raw.forEach((r, i) => {
     const date = toIsoDate(r[map["date"]!]);
     if (!date) return;
+    if (!String(r[map["product"]!] ?? "").trim()) return;
     const quantity = num(r[map["quantity"]!]);
     const revenue = num(r[map["revenue"]!]);
     const cost = map["cost"] ? num(r[map["cost"]!]) : map["profit"] ? revenue - num(r[map["profit"]!]) : revenue * 0.6;
@@ -285,7 +289,7 @@ export function parseRows(raw: Record<string, unknown>[]): { data?: SaleRecord[]
       channel: map["channel"] ? String(r[map["channel"]!]) : "Unknown",
     });
   });
-  if (!data.length) return { error: "No rows had a valid date." };
+  if (!data.length) return { error: "No valid rows found — check that the Date column contains real dates." };
   return { data: data.sort((a, b) => a.date.localeCompare(b.date)) };
 }
 

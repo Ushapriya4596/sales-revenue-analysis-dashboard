@@ -160,7 +160,12 @@ function DashboardPage() {
                 Analyze sales performance, revenue trends, products and customers
               </p>
             </div>
-            <DataImporter onImport={(d) => setData(d)} />
+            <DataImporter
+              onImport={(d) => {
+                setData(d);
+                setFilters({ from: d[0]!.date, to: d[d.length - 1]!.date, region: ALL, category: ALL, product: ALL, customerType: ALL, channel: ALL });
+              }}
+            />
             <Button variant="outline" onClick={refresh} disabled={refreshing}>
               <RefreshCw className={`mr-1.5 h-4 w-4 ${refreshing ? "animate-spin" : ""}`} /> Refresh
             </Button>
