@@ -1,4 +1,4 @@
-# Precise Ui Translator
+# Sales & Revenue Analysis Dashboard
 
 Implement exactly the screenshot and nothing else
 
