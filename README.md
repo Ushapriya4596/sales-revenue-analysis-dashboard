@@ -66,6 +66,13 @@ Artificial Intelligence & Machine Learning
 
 [View the project on GitHub](https://github.com/Ushapriya4596/sales-revenue-analysis-dashboard)
 
+
+## 🌐 Live Demo
+
+Explore the live Sales & Revenue Analysis Dashboard:
+
+https://sales-revenue-analysis-dashboard.lovable.app/
+
 ---
 
 *This project was developed for learning and portfolio-building purposes.*
