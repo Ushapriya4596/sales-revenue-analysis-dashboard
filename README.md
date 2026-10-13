@@ -23,11 +23,15 @@ The project presents sales data in an easy-to-understand format to support data-
 
 ## 🛠️ Technologies Used
 
-- **Frontend:** Add the actual frontend technologies used in this project.
-- **Data Analysis:** Add the tools or libraries actually used.
-- **Visualization:** Add the dashboard visualization tool.
-- **Development Platform:** Lovable
-- **Version Control:** GitHub
+- **React** — Building the user interface.
+- **TypeScript** — Type-safe application development.
+- **Tailwind CSS** — Styling and responsive layouts.
+- **Recharts** — Sales and revenue data visualizations.
+- **Lucide React** — Icons and visual elements.
+- **XLSX** — Reading and processing Excel files.
+- **Vite** — Development server and production builds.
+- **Lovable** — AI-assisted project development.
+- **GitHub** — Source code hosting and version control.
 
 ## 🚀 Getting Started
 
